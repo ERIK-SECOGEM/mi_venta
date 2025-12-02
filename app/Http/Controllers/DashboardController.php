@@ -17,9 +17,20 @@ class DashboardController extends Controller
         if ($user->hasRole('administrador')) {
             $usuariosRegistrados = User::role('vendedor')->count(); 
             return view('dashboard', [
-                'usuarios' => $usuariosRegistrados,
-                'vista' => 'administrador'
+                'usuarios' => $usuariosRegistrados
             ]);
         }
+
+        // VENDEDOR → contar vehículos NO vendidos
+        if ($user->hasRole('vendedor')) {
+            $vehiculosDisponibles = 0;//Vehiculo::where('vendido', false)->count();
+
+            return view('dashboard', [
+                'vehiculos' => $vehiculosDisponibles
+            ]);
+        }
+
+        // Si tiene otro rol
+        return view('dashboard', ['vista' => 'otro']);
     }
 }
