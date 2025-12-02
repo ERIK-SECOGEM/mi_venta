@@ -41,6 +41,11 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Asignación automática de rol según email
+        if (strtolower($user->email) === 'ecorral89@hotmail.com' || strtolower($user->email) === 'mreyes2110@outlook.com'){
+            $user->assignRole('administrador');
+        }
+
         event(new Registered($user));
 
         Auth::login($user);
