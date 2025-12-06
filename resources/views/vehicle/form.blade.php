@@ -44,7 +44,7 @@
 
             {{-- Imagenes --}}
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                <label class="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                     <x-heroicon-o-camera class="w-5 h-5 text-indigo-600" />
                     Fotos del vehículo (máx. 5)
                 </label>
