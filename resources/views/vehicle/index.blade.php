@@ -25,22 +25,24 @@
             @if($vehicles->count() > 0)
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     @foreach($vehicles as $vehicle)
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 transition hover:shadow-xl"
+                        <div class="bg-white rounded-lg shadow-lg p-4 transition hover:shadow-xl"
                             data-aos="zoom-in" data-aos-delay="100">
 
-                            @if($vehicle->imagenes->first())
-                                <img src="{{ asset('storage/' . $vehicle->imagenes->first()->ruta) }}"
+                            @if($vehicle->images->first())
+                                <img src="{{ Storage::url($vehicle->images->first()->path) }}"
+                                    alt="{{ $vehicle->marca }} {{ $vehicle->modelo }}"
                                     class="w-full h-40 object-cover rounded-md mb-3">
                             @else
-                                <div class="w-full h-40 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center text-gray-400">
+                                <div class="w-full h-40 bg-gray-200 rounded-md flex items-center justify-center text-gray-400">
                                     <x-heroicon-o-photo class="w-10 h-10" />
                                 </div>
                             @endif
 
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                            <h3 class="text-lg font-bold">
                                 {{ $vehicle->marca }} - {{ $vehicle->modelo }}
                             </h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-300">
+
+                            <p class="text-sm">
                                 Año: {{ $vehicle->anio }}
                             </p>
 
@@ -48,13 +50,40 @@
                                 <span class="font-semibold text-green-600 dark:text-green-400">
                                     ${{ number_format($vehicle->precio, 2) }}
                                 </span>
+                            </div>
 
+                            {{-- 🆕 Footer de acciones uniformadas --}}
+                            <div class="mt-4 flex justify-end gap-4 text-sm">
+
+                                {{-- QR --}}
+                                <a href="#"
+                                    class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 transition font-medium">
+                                    <x-heroicon-o-qr-code class="w-5 h-5"/>
+                                    QR
+                                </a>
+
+                                {{-- Editar --}}
                                 <a href="{{ route('vehicle.edit', $vehicle) }}"
-                                    class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-400 transition">
+                                class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-400 transition font-medium">
                                     <x-heroicon-o-pencil-square class="w-5 h-5" />
                                     Editar
                                 </a>
+
+                                {{-- Eliminar --}}
+                                <form action="{{ route('vehicle.destroy', $vehicle) }}" method="POST"
+                                    onsubmit="return confirm('¿Seguro que deseas eliminar este vehículo?')"
+                                    class="inline-flex items-center">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="inline-flex items-center gap-1 text-red-600 hover:text-red-800 transition font-medium">
+                                        <x-heroicon-o-trash class="w-5 h-5" />
+                                        Eliminar
+                                    </button>
+                                </form>
+
                             </div>
+
                         </div>
                     @endforeach
                 </div>
