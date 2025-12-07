@@ -52,9 +52,9 @@ class VehicleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $vehicles = Vehicle::with('images')->paginate(9);
+        $vehicles = $this->setQuery($request)->paginate(25); //Vehicle::with('images')->paginate(9); 
         return view('vehicle.index', compact('vehicles'));
     }
 
@@ -144,7 +144,7 @@ class VehicleController extends Controller
     {
         // Eliminar imágenes del storage
         foreach ($vehicle->images as $img) {
-            Storage::delete($img->path); // elimina archivo
+            Storage::disk('public')->delete($img->path); // elimina archivo
             $img->delete(); // elimina registro en DB
         }
 
@@ -164,5 +164,29 @@ class VehicleController extends Controller
     protected function setValidator(Request $request, $id=0)
     {
         return Validator::make($request->all(), $this->validationRules, $this->errorMessages)->setAttributeNames($this->attributeNames);
+    }
+
+    protected function setQuery(Request $request)
+    {
+        $query = $this->model::with('images')->where('user_id', auth()->user()->id);
+
+        // Filtros de búsqueda
+        if ($request->filled('marca')) {
+            $query->where('marca', 'like', '%' . $request->marca . '%');
+        }
+        if ($request->filled('modelo')) {
+            $query->where('modelo', 'like', '%' . $request->modelo . '%');
+        }
+        if ($request->filled('anio')) {
+            $query->where('anio', $request->anio);
+        }
+        if ($request->filled('precio_min')) {
+            $query->where('precio', '>=', $request->precio_min);
+        }
+        if ($request->filled('precio_max')) {
+            $query->where('precio', '<=', $request->precio_max);
+        }
+
+        return $query;
     }
 }
