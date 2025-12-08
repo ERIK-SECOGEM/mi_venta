@@ -46,6 +46,8 @@ class RegisteredUserController extends Controller
             $user->assignRole('administrador');
         }
 
+        $user->assignRole('vendedor');
+
         event(new Registered($user));
 
         Auth::login($user);
