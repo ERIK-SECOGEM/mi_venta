@@ -56,7 +56,7 @@
                             <div class="mt-4 flex justify-end gap-4 text-sm">
 
                                 {{-- QR --}}
-                                <a href="#"
+                                <a href="{{ route('vehiculos.qr.pdf', $vehicle) }}"
                                     class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 transition font-medium">
                                     <x-heroicon-o-qr-code class="w-5 h-5"/>
                                     QR

@@ -28,6 +28,10 @@ Route::middleware(['auth', 'role:vendedor'])->group(function () {
     // Rutas protegidas para vendedores
     Route::resource('/vehicle', VehicleController::class);
     // Otras rutas específicas para vendedores pueden ir aquí
+    Route::get('/vehicle/{vehicle}/qr-pdf', [VehicleController::class, 'generarPdfQr'])->name('vehiculos.qr.pdf');
 });
+
+//ruta publica para ver ficha de vehículo
+Route::get('/v/{vehicle}', [VehicleController::class, 'fichaPublica'])->name('vehiculo.publico');
 
 require __DIR__.'/auth.php';

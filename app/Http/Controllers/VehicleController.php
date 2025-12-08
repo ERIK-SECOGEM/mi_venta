@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Vehicle;
 
 class VehicleController extends Controller
@@ -156,9 +158,31 @@ class VehicleController extends Controller
             ->with('success', 'Vehículo eliminado correctamente.');
     }
 
-    public function qr()
+    public function generarPdfQr(Vehicle $vehicle)
     {
-        //
+        $url = route('vehiculo.publico', $vehicle);
+
+        $qr = base64_encode(
+            QrCode::format('png')->size(250)->generate($url)
+        );
+
+        // Publicar vehículo
+        $vehicle->update(['estatus' => 'Publicado']);
+
+        $pdf = Pdf::loadView('vehicle.qr-pdf', [
+            'vehiculo' => $vehicle,
+            'qr' => $qr,
+            'url' => $url
+        ]);
+
+        return $pdf->download("vehiculo-".$vehicle->id.".pdf");
+    }
+
+    public function fichaPublica(Vehicle $vehicle)
+    {
+        $vehiculo = Vehicle::where('estatus', 'Publicado')->findOrFail($vehicle->id);
+
+        return view('vehicle.publico', compact('vehiculo'));
     }
 
     protected function setValidator(Request $request, $id=0)
