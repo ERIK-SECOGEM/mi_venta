@@ -14,8 +14,8 @@
 <p><strong>Marca:</strong> {{ $vehiculo->marca }}</p>
 <p><strong>Año:</strong> {{ $vehiculo->anio }}</p>
 
-@if ($vehiculo->imagen)
-    <img src="{{ storage_path('app/public/' . $vehiculo->imagen) }}" alt="Vehículo">
+@if ($vehiculo->images)
+    <img src="{{ public_path('storage/' . $vehiculo->images->first()->path) }}" alt="Vehículo">
 @endif
 
 <h3>Escanea el QR</h3>

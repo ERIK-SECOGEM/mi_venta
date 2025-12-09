@@ -175,14 +175,14 @@ class VehicleController extends Controller
             'url' => $url
         ]);
 
-        return $pdf->download("vehiculo-".$vehicle->id.".pdf");
+        return $pdf->download("vehiculo-".$vehicle->marca."-".$vehicle->modelo.".pdf");
     }
 
     public function fichaPublica(Vehicle $vehicle)
     {
-        $vehiculo = Vehicle::where('estatus', 'Publicado')->findOrFail($vehicle->id);
+        $vehicle = Vehicle::where('estatus', 'Publicado')->findOrFail($vehicle->id);
 
-        return view('vehicle.publico', compact('vehiculo'));
+        return view('vehicle.publico', compact('vehicle'));
     }
 
     protected function setValidator(Request $request, $id=0)
