@@ -66,13 +66,8 @@
         </div>
 
         {{-- CTA --}}
-        <div class="grid sm:grid-cols-2 gap-4 pt-4">
-            <a href="https://wa.me/?text=Estoy interesado en este vehículo: {{ urlencode(request()->fullUrl()) }}"
-               class="py-3 text-center text-white bg-green-600 hover:bg-green-700 rounded-xl font-semibold shadow-md transition">
-                Contactar por WhatsApp
-            </a>
-        </div>
         
+
     </div>
 
     {{-- Footer --}}
