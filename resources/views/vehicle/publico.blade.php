@@ -34,7 +34,7 @@
         {{-- Título + Precio --}}
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <h1 class="text-3xl font-bold text-gray-900">
-                {{ $vehicle->marca }} {{ $vehicle->modelo }}
+                {{ $vehicle->marca }} {{ $vehicle->submarca }}
             </h1>
             <div class="text-3xl font-extrabold text-indigo-700">
                 ${{ number_format($vehicle->precio, 0) }} MXN

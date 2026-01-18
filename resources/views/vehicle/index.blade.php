@@ -30,7 +30,7 @@
 
                             @if($vehicle->images->first())
                                 <img src="{{ Storage::url($vehicle->images->first()->path) }}"
-                                    alt="{{ $vehicle->marca }} {{ $vehicle->modelo }}"
+                                    alt="{{ $vehicle->marca }} {{ $vehicle->submarca }}"
                                     class="w-full h-40 object-cover rounded-md mb-3">
                             @else
                                 <div class="w-full h-40 bg-gray-200 rounded-md flex items-center justify-center text-gray-400">
@@ -39,7 +39,7 @@
                             @endif
 
                             <h3 class="text-lg font-bold">
-                                {{ $vehicle->marca }} - {{ $vehicle->modelo }}
+                                {{ $vehicle->marca }} - {{ $vehicle->submarca }}
                             </h3>
 
                             <p class="text-sm">

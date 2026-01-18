@@ -10,7 +10,7 @@
 
 <h2>Ficha del Vehículo</h2>
 
-<p><strong>Modelo:</strong> {{ $vehiculo->modelo }}</p>
+<p><strong>submarca:</strong> {{ $vehiculo->submarca }}</p>
 <p><strong>Marca:</strong> {{ $vehiculo->marca }}</p>
 <p><strong>Año:</strong> {{ $vehiculo->anio }}</p>
 

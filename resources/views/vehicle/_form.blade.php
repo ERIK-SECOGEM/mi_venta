@@ -18,12 +18,12 @@
             @enderror
     </div>
 
-    {{-- Modelo --}}
+    {{-- Submarca --}}
     <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Modelo</label>
-        <input type="text" name="modelo" value="{{ old('marca', $vehicle->modelo ?? '') }}" required
-            class="w-full rounded-lg @error('modelo') border-red-500 @else border-gray-300 @enderror focus:ring-indigo-500 focus:border-indigo-500">
-            @error('modelo')
+        <label class="block text-sm font-medium text-gray-700 mb-1">Submarca</label>
+        <input type="text" name="submarca" value="{{ old('submarca', $vehicle->submarca ?? '') }}" required
+            class="w-full rounded-lg @error('submarca') border-red-500 @else border-gray-300 @enderror focus:ring-indigo-500 focus:border-indigo-500">
+            @error('submarca')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
     </div>

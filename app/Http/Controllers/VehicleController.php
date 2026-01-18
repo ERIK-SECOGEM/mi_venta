@@ -21,7 +21,7 @@ class VehicleController extends Controller
     {
         $this->validationRules = [
             'marca' => 'required|string|min:2|max:30',
-            'modelo' => 'required|string|min:2|max:30',
+            'submarca' => 'required|string|min:2|max:30',
             'anio' => 'required|integer|min:1900|max:' . date('Y'),
             'precio' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0',
             'descripcion' => 'nullable|string|max:500',
@@ -35,7 +35,7 @@ class VehicleController extends Controller
 
         $this->attributeNames = [
             'marca' => 'marca',
-            'modelo' => 'modelo',
+            'submarca' => 'submarca',
             'anio' => 'año',
             'precio' => 'precio',
             'descripcion' => 'descripción',    
@@ -175,7 +175,7 @@ class VehicleController extends Controller
             'url' => $url
         ]);
 
-        return $pdf->download("vehiculo-".$vehicle->marca."-".$vehicle->modelo.".pdf");
+        return $pdf->download("vehiculo-".$vehicle->marca."-".$vehicle->submarca.".pdf");
     }
 
     public function fichaPublica(Vehicle $vehicle)
@@ -198,8 +198,8 @@ class VehicleController extends Controller
         if ($request->filled('marca')) {
             $query->where('marca', 'like', '%' . $request->marca . '%');
         }
-        if ($request->filled('modelo')) {
-            $query->where('modelo', 'like', '%' . $request->modelo . '%');
+        if ($request->filled('submarca')) {
+            $query->where('submarca', 'like', '%' . $request->submarca . '%');
         }
         if ($request->filled('anio')) {
             $query->where('anio', $request->anio);
