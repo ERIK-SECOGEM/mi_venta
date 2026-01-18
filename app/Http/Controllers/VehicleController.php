@@ -25,7 +25,7 @@ class VehicleController extends Controller
             'anio' => 'required|integer|min:1900|max:' . date('Y'),
             'precio' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/|min:0',
             'descripcion' => 'nullable|string|max:500',
-            'imagenes' => ['required', 'array', 'min:0', 'max:5'], // max 5 archivos permitidos
+            'imagenes' => ['required', 'array', 'min:1', 'max:5'], // max 5 archivos permitidos
             'imagenes.*' => [
                 'image',
                 'mimes:jpg,jpeg,png,webp',
@@ -115,17 +115,17 @@ class VehicleController extends Controller
      */
     public function update(Request $request, Vehicle $vehicle)
     {
-        $this->setValidator($request, $vehicle->id)->validate();
+        $this->setValidator($request, $vehicle)->validate();
 
         $vehicle->update($request->all());
 
         if ($request->hasFile('imagenes')) {
 
             // Eliminar imágenes existentes del Storage y DB
-            foreach ($vehicle->images as $image) {
+            /*foreach ($vehicle->images as $image) {
                 Storage::disk('public')->delete($image->path);
                 $image->delete();
-            }
+            }*/
 
             // Subir las nuevas imágenes
             foreach ($request->file('imagenes') as $file) {
@@ -144,6 +144,7 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
+        dd($vehicle);
         // Eliminar imágenes del storage
         foreach ($vehicle->images as $img) {
             Storage::disk('public')->delete($img->path); // elimina archivo
@@ -185,8 +186,35 @@ class VehicleController extends Controller
         return view('vehicle.publico', compact('vehicle'));
     }
 
-    protected function setValidator(Request $request, $id=0)
+    protected function setValidator(Request $request, ? Vehicle $vehicle = null)
     {
+        $imagenesExistentes = $vehicle?->images()->count() ?? 0;
+        $imagenesNuevas = is_array($request->imagenes) ? count($request->imagenes) : 0;
+
+        if ($request->isMethod('post')) {
+            // CREAR → obligatorio
+            $this->validationRules['imagenes'] = ['required', 'array', 'min:1', 'max:5'];
+        }
+
+        if ($request->isMethod('put')) {
+            // Si no tiene imágenes obligatorio añadir al menos una
+            if ($imagenesExistentes === 0) {
+                $this->validationRules['imagenes'] = ['required', 'array', 'min:1'];
+            } else {
+                $this->validationRules['imagenes'] = ['nullable', 'array'];
+            }
+
+            //Validar límite total
+            if (($imagenesExistentes + $imagenesNuevas) > 5) {
+                Validator::make([], [])->after(function ($validator) {
+                    $validator->errors()->add(
+                        'imagenes',
+                        'Solo puedes tener un máximo de 5 imágenes por vehículo.'
+                    );
+                })->validate();
+            }
+        }
+
         return Validator::make($request->all(), $this->validationRules, $this->errorMessages)->setAttributeNames($this->attributeNames);
     }
 

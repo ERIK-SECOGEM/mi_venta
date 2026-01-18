@@ -66,6 +66,33 @@
             Imágenes del vehículo
         </label>
 
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        @foreach($vehicle->images as $image)
+            <div class="relative group" id="image-{{ $image->id }}">
+                <img src="{{ Storage::url($image->path) }}"
+                    class="h-32 w-full object-cover rounded-lg">
+                @if($vehicle->images->count() > 1)
+                <button
+                    onclick="deleteImage({{ $image->id }})"
+                    class="absolute top-2 right-2 bg-red-600 hover:bg-red-700
+                        text-white p-1.5 rounded-full shadow">
+                    <x-heroicon-o-trash class="w-4 h-4"/>
+                </button>
+                @endif
+            </div>
+        @endforeach
+        </div>
+
+        @if($vehicle->exists && $vehicle->images->isEmpty())
+            <p class="text-yellow-600 text-sm">
+                ⚠️ Este vehículo no tiene imágenes. Debes subir al menos una.
+            </p>
+        @endif
+
+        <p class="text-sm text-gray-500">
+            Imágenes actuales: {{ $vehicle->images->count() }} / 5
+        </p>
+
         <div id="dropzone"
                 class="cursor-pointer border-2 border-dashed border-indigo-400 rounded-2xl bg-indigo-50 
                     px-6 py-10 text-center hover:bg-indigo-100 transition">

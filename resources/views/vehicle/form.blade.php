@@ -136,5 +136,32 @@
         });
     });
     </script>
+
+    <script>
+        function deleteImage(imageId) {
+            if (!confirm('¿Eliminar esta imagen?')) return;
+
+            fetch('{{ route('images.ajax.delete') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    image_id: imageId
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Error al eliminar');
+                return res.json();
+            })
+            .then(() => {
+                document.getElementById('image-' + imageId)?.remove();
+            })
+            .catch(() => {
+                alert('No se pudo eliminar la imagen');
+            });
+        }
+    </script>
     
 </x-app-layout>

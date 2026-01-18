@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\ImageController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,6 +30,7 @@ Route::middleware(['auth', 'role:vendedor'])->group(function () {
     Route::resource('/vehicle', VehicleController::class);
     // Otras rutas específicas para vendedores pueden ir aquí
     Route::get('/vehicle/{vehicle}/qr-pdf', [VehicleController::class, 'generarPdfQr'])->name('vehiculos.qr.pdf');
+    Route::post('/imagenes/eliminar', [ImageController::class, 'ajaxDelete'])->name('images.ajax.delete');
 });
 
 //ruta publica para ver ficha de vehículo
