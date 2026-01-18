@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('marca');
-            $table->string('modelo');
+            $table->string('submarca');
             $table->year('anio');
             $table->decimal('precio', 10, 2);
             $table->text('descripcion')->nullable();
