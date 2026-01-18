@@ -144,7 +144,6 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
-        dd($vehicle);
         // Eliminar imágenes del storage
         foreach ($vehicle->images as $img) {
             Storage::disk('public')->delete($img->path); // elimina archivo
