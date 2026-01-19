@@ -69,6 +69,26 @@
         
 
     </div>
+    <button id="openChat"
+        class="fixed bottom-6 right-6 bg-indigo-600 text-white px-4 py-3 rounded-full shadow-lg">
+        💬 Contactar vendedor
+    </button>
+
+    <div id="chatModal" class="hidden fixed inset-0 bg-black/50 flex items-end md:items-center justify-center">
+        <div class="bg-white w-full md:w-96 rounded-t-xl md:rounded-xl p-4 space-y-3">
+
+            <h3 class="font-semibold text-lg">Contactar vendedor</h3>
+
+            <input id="chatName" class="w-full border rounded p-2" placeholder="Tu nombre">
+            <input id="chatContact" class="w-full border rounded p-2" placeholder="Email">
+            <textarea id="chatMessage" class="w-full border rounded p-2" placeholder="Mensaje"></textarea>
+
+            <button onclick="sendMessage()"
+                class="w-full bg-indigo-600 text-white py-2 rounded">
+                Enviar mensaje
+            </button>
+        </div>
+    </div>
 
     {{-- Footer --}}
     <div class="bg-gray-50 border-t text-center text-sm text-gray-500 py-3">
@@ -146,6 +166,30 @@ function changeImage() {
 // Primera carga ya con skeleton
 loadImage(mainImg.src);
 highlightThumb();
+</script>
+
+<script>
+document.getElementById('openChat').onclick = () => {
+    document.getElementById('chatModal').classList.remove('hidden');
+}
+
+function sendMessage() {
+    fetch("{{ route('public.chat.store', $vehicle) }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            name: chatName.value,
+            contact: chatContact.value,
+            message: chatMessage.value
+        })
+    }).then(() => {
+        alert('Mensaje enviado');
+        document.getElementById('chatModal').classList.add('hidden');
+    });
+}
 </script>
 
 </x-report-layout>

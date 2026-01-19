@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\PublicChatController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,5 +36,6 @@ Route::middleware(['auth', 'role:vendedor'])->group(function () {
 
 //ruta publica para ver ficha de vehículo
 Route::get('/v/{vehicle}', [VehicleController::class, 'fichaPublica'])->name('vehiculo.publico');
+Route::post('/v/{vehicle}/chat', [PublicChatController::class, 'store'])->name('public.chat.store');
 
 require __DIR__.'/auth.php';

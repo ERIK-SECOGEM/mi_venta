@@ -43,4 +43,9 @@ class Vehicle extends Model
         }
         return $this->where('id', $decoded[0])->firstOrFail();
     }
+
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
 }
