@@ -63,10 +63,37 @@
             <h2 class="text-sm font-semibold text-gray-700">Vehículos Disponibles</h2>
 
             <div class="text-4xl font-extrabold text-green-600 my-1">
-                {{ $vehiculos }}
+                <a href="{{ route('vehicle.index') }}">{{ $vehiculos }}</a>
             </div>
 
             <p class="text-xs text-gray-500">Sin contar vendidos</p>
+        </div>
+
+        {{-- conversaciones --}}
+        <div 
+            class="bg-white shadow-lg rounded-xl p-5 text-center border border-gray-100"
+            data-aos="fade-up"
+            data-aos-duration="700"
+        >
+            <div class="flex justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor"
+                    class="w-7 h-7 text-blue-600">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8.625 9.75h6.75M8.625 12.75h4.5M21 12c0 4.97-4.03 9-9 
+                        9a8.96 8.96 0 0 1-4.246-1.06L3 21l1.06-4.754A8.96 
+                        8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9z"/>
+                </svg>
+            </div>
+
+            <h2 class="text-sm font-semibold text-gray-700">Conversaciones</h2>
+
+            <div class="text-4xl font-extrabold text-blue-600 my-1">
+                <a href="{{ route('chats.index') }}">{{ $conversaciones }}</a>
+            </div>
+
+            <p class="text-xs text-gray-500">Prospectos</p>
         </div>
         @endrole
 

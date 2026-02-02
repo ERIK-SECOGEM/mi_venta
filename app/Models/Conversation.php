@@ -5,28 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Hashids;
 
-class Vehicle extends Model
+class Conversation extends Model
 {
     protected $fillable = [
-        'user_id',
-        'marca',
-        'submarca',
-        'anio',
-        'precio',
-        'descripcion',
-        'estatus',
+        'vehicle_id',
+        'seller_id',
+        'client_name',
+        'client_contact',
     ];
 
-    // Relación con Usuario (vendedor)
-    public function user()
+    public function messages()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Message::class);
     }
 
-    // Relación polimórfica con imágenes
-    public function images()
+    public function vehicle()
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->belongsTo(Vehicle::class);
     }
 
     // ✔ Usar fake ID automatizado para rutas
@@ -42,10 +37,5 @@ class Vehicle extends Model
             abort(404);
         }
         return $this->where('id', $decoded[0])->firstOrFail();
-    }
-
-    public function conversations()
-    {
-        return $this->hasMany(Conversation::class);
     }
 }
