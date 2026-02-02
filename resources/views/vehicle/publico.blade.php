@@ -81,6 +81,14 @@
 
             <input id="chatName" class="w-full border rounded p-2" placeholder="Tu nombre">
             <input id="chatContact" class="w-full border rounded p-2" placeholder="Email">
+            <div id="lastSellerMessage"
+                class="hidden bg-green-50 border border-green-200 rounded-lg p-3 text-sm">
+                <p class="font-semibold text-green-700 mb-1">
+                    Última respuesta del vendedor:
+                </p>
+                <p id="sellerMessageText" class="text-gray-800"></p>
+                <p id="sellerMessageDate" class="text-xs text-gray-500 mt-1"></p>
+            </div>
             <textarea id="chatMessage" class="w-full border rounded p-2" placeholder="Mensaje"></textarea>
 
             <button onclick="sendMessage()"
@@ -185,11 +193,38 @@ function sendMessage() {
             contact: chatContact.value,
             message: chatMessage.value
         })
-    }).then(() => {
-        alert('Mensaje enviado');
-        document.getElementById('chatModal').classList.add('hidden');
+    }).then(response => response.json()).then(data => {
+        if (data.ok) {
+            alert('Mensaje enviado');
+            document.getElementById('chatModal').classList.add('hidden');
+            console.log(data.ok);
+        } else {
+            alert('Error al enviar el mensaje');
+        }
     });
 }
 </script>
+<script>
+const contactInput = document.getElementById('chatContact');
+
+contactInput.addEventListener('blur', () => {
+    if (!contactInput.value) return;
+
+    fetch(`{{ route('public.chat.last', $vehicle) }}?contact=${encodeURIComponent(contactInput.value)}`)
+        .then(res => res.json())
+        .then(data => {
+            const box = document.getElementById('lastSellerMessage');
+
+            if (data.message) {
+                document.getElementById('sellerMessageText').innerText = data.message;
+                document.getElementById('sellerMessageDate').innerText = data.date;
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        });
+});
+</script>
+
 
 </x-report-layout>

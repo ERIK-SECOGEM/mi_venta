@@ -90,7 +90,7 @@
             <h2 class="text-sm font-semibold text-gray-700">Conversaciones</h2>
 
             <div class="text-4xl font-extrabold text-blue-600 my-1">
-                <a href="#">{{ $conversaciones }}</a>
+                <a href="{{ route('chats.index') }}">{{ $conversaciones }}</a>
             </div>
 
             <p class="text-xs text-gray-500">Prospectos</p>

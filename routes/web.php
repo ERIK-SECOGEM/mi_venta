@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PublicChatController;
+use App\Http\Controllers\SellerChatController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,10 +33,14 @@ Route::middleware(['auth', 'role:vendedor'])->group(function () {
     // Otras rutas específicas para vendedores pueden ir aquí
     Route::get('/vehicle/{vehicle}/qr-pdf', [VehicleController::class, 'generarPdfQr'])->name('vehiculos.qr.pdf');
     Route::post('/imagenes/eliminar', [ImageController::class, 'ajaxDelete'])->name('images.ajax.delete');
+    Route::get('/seller/chats', [SellerChatController::class, 'index'])->name('chats.index');
+    Route::get('/seller/chats/{conversation}', [SellerChatController::class, 'show'])->name('chats.show');
+    Route::post('/seller/chats/{conversation}/reply', [SellerChatController::class, 'reply'])->name('chats.reply');
 });
 
 //ruta publica para ver ficha de vehículo
 Route::get('/v/{vehicle}', [VehicleController::class, 'fichaPublica'])->name('vehiculo.publico');
 Route::post('/v/{vehicle}/chat', [PublicChatController::class, 'store'])->name('public.chat.store');
+Route::get('/v/{vehicle}/last-message', [PublicChatController::class, 'lastMessage'])->name('public.chat.last');
 
 require __DIR__.'/auth.php';

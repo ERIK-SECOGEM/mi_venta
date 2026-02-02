@@ -25,7 +25,8 @@ class DashboardController extends Controller
         // VENDEDOR → contar vehículos NO vendidos
         if ($user->hasRole('vendedor')) {
             $vehiculosDisponibles = Vehicle::where('estatus', '!=', 'Vendido')->where('user_id', $user->id)->count();
-            $conversaciones = Conversation::where('seller_id', $user->id)->with('vehicle')->latest()->count();
+            //$conversaciones = Conversation::where('seller_id', $user->id)->with('vehicle')->latest()->count();
+            $conversaciones = auth()->user()->unreadNotifications->count();
 
             return view('dashboard', [
                 'vehiculos' => $vehiculosDisponibles,
