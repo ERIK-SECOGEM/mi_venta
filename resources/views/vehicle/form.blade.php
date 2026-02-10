@@ -69,8 +69,8 @@
                     preview.innerHTML = '';
                     return;
                 }
-                if (f.size > 2 * 1024 * 1024) {
-                    alert('Cada imagen debe ser menor a 2MB.');
+                if (f.size > 20 * 1024 * 1024) {
+                    alert('Cada imagen debe ser menor a 20MB.');
                     input.value = '';
                     preview.innerHTML = '';
                     return;
@@ -103,8 +103,8 @@
                 return;
             }
             for (const f of files) {
-                if (f.size > 2 * 1024 * 1024) {
-                    alert('Cada imagen debe ser menor o igual a 2MB.');
+                if (f.size > 20 * 1024 * 1024) {
+                    alert('Cada imagen debe ser menor o igual a 20MB.');
                     return;
                 }
             }
