@@ -31,7 +31,7 @@
                             @if($vehicle->images->first())
                                 <img src="{{ Storage::url($vehicle->images->first()->path) }}"
                                     alt="{{ $vehicle->marca }} {{ $vehicle->submarca }}"
-                                    class="w-full h-40 object-cover rounded-md mb-3">
+                                    class="w-full h-70 object-cover rounded-md mb-3" loading="lazy">
                             @else
                                 <div class="w-full h-40 bg-gray-200 rounded-md flex items-center justify-center text-gray-400">
                                     <x-heroicon-o-photo class="w-10 h-10" />

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Vehicle;
@@ -29,7 +32,7 @@ class VehicleController extends Controller
             'imagenes.*' => [
                 'image',
                 'mimes:jpg,jpeg,png,webp',
-                'max:2048' // 2048 KB = 2MB
+                'max:20000' // 2048 KB = 2MB
             ],
         ];
 
@@ -80,11 +83,19 @@ class VehicleController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        $vehicle = Vehicle::create($request->all());
+        $vehicle = Vehicle::create($request->except('imagenes'));
 
         if ($request->hasFile('imagenes')) {
+            $manager = new ImageManager(new Driver());
+            
             foreach ($request->file('imagenes') as $imagen) {
-                $path = $imagen->store('vehicles', 'public');
+                 $image = $manager->read($imagen)
+                ->scaleDown(width: 1600) // reduce tamaño
+                ->toJpeg(75); // compresión
+                
+                $filename = Str::uuid() . '.jpg';
+                $path = "vehicles/{$filename}";
+                Storage::disk('public')->put($path, $image);
                 $vehicle->images()->create([
                     'path' => $path
                 ]);
@@ -117,21 +128,21 @@ class VehicleController extends Controller
     {
         $this->setValidator($request, $vehicle)->validate();
 
-        $vehicle->update($request->all());
+        $vehicle->update($request->except('imagenes'));
 
         if ($request->hasFile('imagenes')) {
-
-            // Eliminar imágenes existentes del Storage y DB
-            /*foreach ($vehicle->images as $image) {
-                Storage::disk('public')->delete($image->path);
-                $image->delete();
-            }*/
-
-            // Subir las nuevas imágenes
-            foreach ($request->file('imagenes') as $file) {
-                $filePath = $file->store('vehicles', 'public');
+            $manager = new ImageManager(new Driver());
+            
+            foreach ($request->file('imagenes') as $imagen) {
+                 $image = $manager->read($imagen)
+                ->scaleDown(width: 1600) // reduce tamaño
+                ->toJpeg(75); // compresión
+                
+                $filename = Str::uuid() . '.jpg';
+                $path = "vehicles/{$filename}";
+                Storage::disk('public')->put($path, $image);
                 $vehicle->images()->create([
-                    'path' => $filePath
+                    'path' => $path
                 ]);
             }
         }
