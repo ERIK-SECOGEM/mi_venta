@@ -3,7 +3,7 @@
 <head>
     <style>
         body { font-family: sans-serif; text-align: center; }
-        img { max-width: 250px; border-radius: 10px; }
+        img { border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -15,12 +15,12 @@
 <p><strong>Año:</strong> {{ $vehiculo->anio }}</p>
 
 @if ($vehiculo->images)
-    <img src="{{ public_path('storage/' . $vehiculo->images->first()->path) }}" alt="Vehículo">
+    <img src="{{ public_path('storage/' . $vehiculo->images->first()->path) }}" alt="Vehículo" width="250">
 @endif
 
 <h3>Escanea el QR</h3>
 
-<img src="data:image/png;base64,{{ $qr }}" alt="QR">
+<img src="data:image/png;base64,{{ $qr }}" alt="QR" width="500" height="500">
 
 <p>o visita: {{ $url }}</p>
 
