@@ -15,7 +15,7 @@
 <p><strong>Año:</strong> {{ $vehiculo->anio }}</p>
 
 @if ($vehiculo->images)
-    <img src="{{ public_path('storage/' . $vehiculo->images->first()->path) }}" alt="Vehículo" width="100" height="150">
+    <img src="{{ public_path('storage/' . $vehiculo->images->first()->path) }}" alt="Vehículo" width="200" height="150">
 @endif
 
 <h3>Escanea el QR</h3>
